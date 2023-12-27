@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:languageapp/pages/homePage.dart';
 import 'package:languageapp/tools/spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,6 +12,15 @@ class TemproryPage extends StatefulWidget {
 
 class _TemproryPageState extends State<TemproryPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    });
+  }
+
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -30,14 +40,13 @@ class _TemproryPageState extends State<TemproryPage> {
         children: [
           Container(
             width: width * 1,
-            height: 300,
+            height: height * 0.4,
             child: Image.asset("assets/images/split_image.png"),
           ),
           SizedBox(
-            height: 170,
+            height: 50,
           ),
           Container(
-            color: Colors.red,
             width: width,
             child: Text(
               'İNGİLİZCE SÖZLÜK',
@@ -50,15 +59,24 @@ class _TemproryPageState extends State<TemproryPage> {
               textAlign: TextAlign.center,
             ),
           ),
-          Container(
-            child: Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  color: Colors.blue,
-                  child: buildSpinKit(),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Giriş Yapılıyor..",
+                  style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none),
                 ),
-              ),
+                SizedBox(height: 20),
+                buildSpinKit(),
+                SizedBox(
+                  height: 60,
+                )
+              ],
             ),
           ),
         ],
