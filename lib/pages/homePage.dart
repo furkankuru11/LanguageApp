@@ -33,28 +33,40 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 80,
+            ),
             Column(
               children: [
-                Container(
-                  width: width * 0.6,
-                  height: 50,
-                  color: Colors.red,
+                GestureDetector(
+                  child: Container(
+                    width: width * 0.6,
+                    height: 50,
+                    color: Colors.red,
+                  ),
+                  onTap: () {},
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: width * 0.6,
-                  height: 50,
-                  color: Colors.blue,
+                GestureDetector(
+                  child: Container(
+                    width: width * 0.6,
+                    height: 50,
+                    color: Colors.blue,
+                  ),
+                  onTap: () {},
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: width * 0.6,
-                  height: 50,
-                  color: Colors.green,
+                GestureDetector(
+                  child: Container(
+                    width: width * 0.6,
+                    height: 50,
+                    color: Colors.green,
+                  ),
+                  onTap: () {},
                 ),
                 SizedBox(
                   height: 20,
@@ -67,16 +79,20 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.red,
+                GestureDetector(
+                  child: Container(
+                    width: width * 0.4,
+                    height: 200,
+                    color: Colors.red,
+                  ),
                 ),
-                Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.green,
-                )
+                GestureDetector(
+                  child: Container(
+                    width: width * 0.4,
+                    height: 200,
+                    color: Colors.green,
+                  ),
+                ),
               ],
             )
           ],
