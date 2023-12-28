@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:languageapp/tools/selectedCard.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,20 +80,28 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                GestureDetector(
-                  child: Container(
-                    width: width * 0.4,
-                    height: 200,
-                    color: Colors.red,
+                Container(
+                  child: InkWell(
+                    onTap: () {},
+                    child: SelectedCard(
+                      text: "Kelime Kartları",
+                      icon: Icons.wordpress,
+                      gColor1: Color.fromARGB(228, 243, 119, 30),
+                      gColor2: Color.fromARGB(255, 238, 148, 30),
+                    ),
                   ),
                 ),
-                GestureDetector(
-                  child: Container(
-                    width: width * 0.4,
-                    height: 200,
-                    color: Colors.green,
+                Container(
+                  child: InkWell(
+                    onTap: () {},
+                    child: SelectedCard(
+                      text: "Çoktan Seçmeli",
+                      icon: Icons.circle,
+                      gColor1: Color.fromARGB(255, 13, 161, 38),
+                      gColor2: Color.fromARGB(255, 17, 163, 49),
+                    ),
                   ),
-                ),
+                )
               ],
             )
           ],
