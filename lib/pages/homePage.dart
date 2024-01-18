@@ -3,17 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/tools/selectedCard.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  int selectedValue = 0; // Default selected value for RadioListTile
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -39,38 +40,64 @@ class _HomePageState extends State<HomePage> {
             ),
             Column(
               children: [
-                GestureDetector(
-                  child: Container(
-                    width: width * 0.6,
-                    height: 50,
+                Container(
+                  width: width * 0.7,
+                  child: RadioListTile(
+                    title: Text(
+                      'İngilizce-Türkçe',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    value: 1,
+                    groupValue: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as int;
+                      });
+                    },
+                    activeColor: Colors.red,
+                  ),
+                ),
+                Container(
+                  width: width * 0.7,
+                  child: RadioListTile(
+                    title: Text(
+                      'Türkçe-İngilizce',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    value: 2,
+                    groupValue: selectedValue,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValue = value as int;
+                      });
+                    },
+                    activeColor: Colors.blue,
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  width: width * 0.8,
+                  height: 70,
+                  decoration: BoxDecoration(
                     color: Colors.red,
+                    borderRadius: BorderRadius.circular(
+                        10.0), // Adjust the radius as needed
                   ),
-                  onTap: () {},
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                GestureDetector(
-                  child: Container(
-                    width: width * 0.6,
-                    height: 50,
-                    color: Colors.blue,
+                  child: TextButton(
+                    onPressed: () {
+                      // Handle button press
+                    },
+                    child: Text(
+                      "Listelerim",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  onTap: () {},
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                GestureDetector(
-                  child: Container(
-                    width: width * 0.6,
-                    height: 50,
-                    color: Colors.green,
-                  ),
-                  onTap: () {},
-                ),
-                SizedBox(
-                  height: 20,
                 ),
               ],
             ),
