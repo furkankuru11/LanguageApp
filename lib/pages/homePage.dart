@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:languageapp/pages/list.dart';
 import 'package:languageapp/tools/selectedCard.dart';
 
 class HomePage extends StatefulWidget {
@@ -87,7 +88,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      // Handle button press
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ListPage()));
                     },
                     child: Text(
                       "Listelerim",
