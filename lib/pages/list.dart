@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:languageapp/pages/create_list.dart';
 import 'package:languageapp/tools/listCard.dart';
 
 class ListPage extends StatefulWidget {
@@ -14,7 +15,10 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CreateList()));
+        },
         child: Icon(
           Icons.add,
           color: Colors.white,
