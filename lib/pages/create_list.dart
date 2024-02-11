@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:languageapp/tools/customButton.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
@@ -29,6 +30,9 @@ class _CreateListState extends State<CreateList> {
               child: textFieldBuilder(
             textEditingController: wordTextEditingList[2 * i],
           )),
+          SizedBox(
+            width: 10,
+          ),
           Expanded(
               child: textFieldBuilder(
             textEditingController: wordTextEditingList[(2 * i) + 1],
@@ -143,33 +147,31 @@ class ButtonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              // Silme butonu işlevi
-              // Buraya silme işlemleri ekleyebilirsiniz.
-            },
-            child: Text("Sil"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Ekleme butonu işlevi
-              // Buraya ekleme işlemleri ekleyebilirsiniz.
-            },
-            child: Text("Ekle"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Kaydetme butonu işlevi
-              // Buraya kaydetme işlemleri ekleyebilirsiniz.
-            },
-            child: Text("Kaydet"),
-          ),
+          customButton(
+              onPressed: () {},
+              text: "Sil",
+              icon: Icons.search,
+              backgroundColor: Colors.red),
+          customButton(
+              onPressed: () {},
+              text: "Ekle",
+              icon: Icons.add,
+              backgroundColor: Colors.green),
+          customButton(
+              onPressed: () {},
+              text: "Kaydet",
+              icon: Icons.save,
+              backgroundColor: Colors.blue),
         ],
       ),
     );
   }
 }
+
+void addRow() {}
+void save() {}
+void deleteRow() {}
