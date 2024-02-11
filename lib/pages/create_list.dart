@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/tools/customButton.dart';
@@ -27,16 +29,18 @@ class _CreateListState extends State<CreateList> {
       wordListField.add(Row(
         children: [
           Expanded(
-              child: textFieldBuilder(
-            textEditingController: wordTextEditingList[2 * i],
-          )),
+            child: textFieldBuilder(
+              textEditingController: wordTextEditingList[2 * i],
+            ),
+          ),
           SizedBox(
             width: 10,
           ),
           Expanded(
-              child: textFieldBuilder(
-            textEditingController: wordTextEditingList[(2 * i) + 1],
-          )),
+            child: textFieldBuilder(
+              textEditingController: wordTextEditingList[(2 * i) + 1],
+            ),
+          ),
         ],
       ));
     }
@@ -102,12 +106,64 @@ class _CreateListState extends State<CreateList> {
                   ),
                 ),
               ),
-              ButtonRow(),
+              ButtonRow(
+                addRow: addRow,
+                deleteRow: deleteRow,
+                save: saveRow,
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void addRow() {
+    wordTextEditingList.add(TextEditingController());
+    wordTextEditingList.add(TextEditingController());
+    wordListField.add(Row(
+      children: [
+        Expanded(
+            child: textFieldBuilder(
+                textEditingController:
+                    wordTextEditingList[wordTextEditingList.length - 2])),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+            child: textFieldBuilder(
+                textEditingController:
+                    wordTextEditingList[wordTextEditingList.length - 1])),
+      ],
+    ));
+    setState(() {
+      wordListField;
+    });
+  }
+
+  void deleteRow() {
+    if (wordListField.length != 1) {
+      wordTextEditingList.removeAt(wordTextEditingList.length - 1);
+      wordTextEditingList.removeAt(wordTextEditingList.length - 1);
+      wordListField.removeAt(wordListField.length - 1);
+      setState(() {
+        wordListField;
+      });
+    } else {
+      debugPrint("Son Eleman Silinemez");
+    }
+  }
+
+  void saveRow() {
+    for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+      String eng = wordTextEditingList[2 * i].text;
+      String tr = wordTextEditingList[2 * i + 1].text;
+      if (!eng.isEmpty || !tr.isEmpty)
+        debugPrint(eng + "-------------" + tr);
+      else {
+        debugPrint("boş alan");
+      }
+    }
   }
 
   Container textFieldBuilder({
@@ -144,6 +200,17 @@ class _CreateListState extends State<CreateList> {
 }
 
 class ButtonRow extends StatelessWidget {
+  final VoidCallback addRow;
+  final VoidCallback deleteRow;
+  final VoidCallback save;
+
+  const ButtonRow(
+      {Key? key,
+      required this.addRow,
+      required this.deleteRow,
+      required this.save})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -152,26 +219,29 @@ class ButtonRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           customButton(
-              onPressed: () {},
-              text: "Sil",
-              icon: Icons.search,
-              backgroundColor: Colors.red),
+            onPressed: () {
+              deleteRow();
+            },
+            text: "Sil",
+            icon: Icons.search,
+            backgroundColor: Colors.red,
+          ),
           customButton(
-              onPressed: () {},
-              text: "Ekle",
-              icon: Icons.add,
-              backgroundColor: Colors.green),
+            onPressed: addRow,
+            text: "Ekle",
+            icon: Icons.add,
+            backgroundColor: Colors.green,
+          ),
           customButton(
-              onPressed: () {},
-              text: "Kaydet",
-              icon: Icons.save,
-              backgroundColor: Colors.blue),
+            onPressed: () {
+              save();
+            },
+            text: "Kaydet",
+            icon: Icons.save,
+            backgroundColor: Colors.blue,
+          ),
         ],
       ),
     );
   }
 }
-
-void addRow() {}
-void save() {}
-void deleteRow() {}

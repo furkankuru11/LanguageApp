@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/pages/list.dart';
+import 'package:languageapp/tools/drawer.dart';
 import 'package:languageapp/tools/selectedCard.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   int selectedValue = 0; // Default selected value for RadioListTile
 
   @override
@@ -26,12 +33,8 @@ class _HomePageState extends State<HomePage> {
               color: Colors.black, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        leading: IconButton(
-          icon: Icon(Icons.drag_handle),
-          color: Colors.black,
-          onPressed: () {},
-        ),
       ),
+      drawer: DrawerMenu(),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
