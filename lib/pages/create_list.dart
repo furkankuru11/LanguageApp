@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:languageapp/db/db/db.dart';
+import 'package:languageapp/db/model/list.dart';
+import 'package:languageapp/db/model/words.dart';
 import 'package:languageapp/tools/customButton.dart';
 
 class CreateList extends StatefulWidget {
@@ -142,7 +145,7 @@ class _CreateListState extends State<CreateList> {
   }
 
   void deleteRow() {
-    if (wordListField.length != 1) {
+    if (wordListField.length != 4) {
       wordTextEditingList.removeAt(wordTextEditingList.length - 1);
       wordTextEditingList.removeAt(wordTextEditingList.length - 1);
       wordListField.removeAt(wordListField.length - 1);
@@ -154,7 +157,58 @@ class _CreateListState extends State<CreateList> {
     }
   }
 
-  void saveRow() {
+  void saveRow() async {
+    int counter = 0;
+
+    bool notEmptyPair = false;
+
+    for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+      String eng = wordTextEditingList[2 * i].text;
+      String tr = wordTextEditingList[2 * i + 1].text;
+
+      if (!eng.isEmpty && !tr.isEmpty) {
+        counter++;
+      } else {
+        notEmptyPair = true;
+      }
+    }
+    if (counter >= 4) {
+      if (notEmptyPair == false) {
+        Lists addedList =
+            await DB.instance.insertList(Lists(name: _listName.text));
+        for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+          String eng = wordTextEditingList[2 * i].text;
+          String tr = wordTextEditingList[2 * i + 1].text;
+
+          Word word = await DB.instance.insertWord(Word(
+              list_id: addedList.id,
+              word_eng: eng,
+              word_tr: tr,
+              status: false));
+
+          print(word.id.toString() +
+              "  " +
+              word.list_id.toString() +
+              "    " +
+              word.word_eng.toString() +
+              "   " +
+              word.word_tr.toString() +
+              " " +
+              word.status.toString());
+        }
+
+        print("TOAST MESSAGE => Liste Oluşturuldu");
+        _listName.clear();
+        wordTextEditingList.forEach((element) {
+          element.clear();
+        });
+      } else {
+        debugPrint("Message => Boş Alanları Doldurun");
+      }
+    } else {
+      debugPrint("Message => Minimum 4 çift dolu olmalıdır");
+    }
+
     for (int i = 0; i < wordTextEditingList.length / 2; i++) {
       String eng = wordTextEditingList[2 * i].text;
       String tr = wordTextEditingList[2 * i + 1].text;

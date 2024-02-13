@@ -21,7 +21,7 @@ class DB {
   }
 
   Future _createDB(Database db, int version) async {
-    final idType = 'INTEGER PRIMARY KEY AUTO INCREMENT ';
+    final idType = 'INTEGER PRIMARY KEY';
     final boolType = 'BOOLEAN NOT NULL';
     final integerType = 'INTEGER NOT NULL';
     final textType = 'TEXT NOT NULL';
