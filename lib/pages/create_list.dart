@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/db/db/db.dart';
 import 'package:languageapp/db/model/list.dart';
 import 'package:languageapp/db/model/words.dart';
+import 'package:languageapp/global_widget/toast.dart';
 import 'package:languageapp/tools/customButton.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -158,84 +159,63 @@ class _CreateListState extends State<CreateList> {
   }
 
   void saveRow() async {
-    int counter = 0;
+    if (_listName.text.isNotEmpty) {
+      int counter = 0;
 
-    bool notEmptyPair = false;
+      bool notEmptyPair = false;
 
-    for (int i = 0; i < wordTextEditingList.length / 2; i++) {
-      String eng = wordTextEditingList[2 * i].text;
-      String tr = wordTextEditingList[2 * i + 1].text;
+      for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+        String eng = wordTextEditingList[2 * i].text;
+        String tr = wordTextEditingList[2 * i + 1].text;
 
-      if (!eng.isEmpty && !tr.isEmpty) {
-        counter++;
-      } else {
-        notEmptyPair = true;
-      }
-    }
-    if (counter >= 4) {
-      if (notEmptyPair == false) {
-        Lists addedList =
-            await DB.instance.insertList(Lists(name: _listName.text));
-        for (int i = 0; i < wordTextEditingList.length / 2; i++) {
-          String eng = wordTextEditingList[2 * i].text;
-          String tr = wordTextEditingList[2 * i + 1].text;
-
-          Word word = await DB.instance.insertWord(Word(
-              list_id: addedList.id,
-              word_eng: eng,
-              word_tr: tr,
-              status: false));
-
-          print(word.id.toString() +
-              "  " +
-              word.list_id.toString() +
-              "    " +
-              word.word_eng.toString() +
-              "   " +
-              word.word_tr.toString() +
-              " " +
-              word.status.toString());
+        if (!eng.isEmpty && !tr.isEmpty) {
+          counter++;
+        } else {
+          notEmptyPair = true;
         }
+      }
+      if (counter >= 4) {
+        if (notEmptyPair == false) {
+          Lists addedList =
+              await DB.instance.insertList(Lists(name: _listName.text));
+          for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+            String eng = wordTextEditingList[2 * i].text;
+            String tr = wordTextEditingList[2 * i + 1].text;
 
-        Fluttertoast.showToast(
-            msg: "Liste Başarıyla Oluşturuldu",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        _listName.clear();
-        wordTextEditingList.forEach((element) {
-          element.clear();
-        });
+            Word word = await DB.instance.insertWord(Word(
+                list_id: addedList.id,
+                word_eng: eng,
+                word_tr: tr,
+                status: false));
+
+            print(word.id.toString() +
+                "  " +
+                word.list_id.toString() +
+                "    " +
+                word.word_eng.toString() +
+                "   " +
+                word.word_tr.toString() +
+                " " +
+                word.status.toString());
+          }
+
+          toastMessage("Liste Başarıyla Oluşturuldu");
+        } else {
+          toastMessage("Boş Alanları Doldurun veya Silin");
+        }
       } else {
-        Fluttertoast.showToast(
-            msg: "Boş Alanları Doldurun veya Silin",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        toastMessage("Minimum 4  Çift Olmalıdır");
+      }
+
+      for (int i = 0; i < wordTextEditingList.length / 2; i++) {
+        String eng = wordTextEditingList[2 * i].text;
+        String tr = wordTextEditingList[2 * i + 1].text;
+        if (!eng.isEmpty || !tr.isEmpty)
+          debugPrint(eng + "-------------" + tr);
+        else {}
       }
     } else {
-      Fluttertoast.showToast(
-          msg: "Minimum 4  Çift Olmalıdır",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-
-    for (int i = 0; i < wordTextEditingList.length / 2; i++) {
-      String eng = wordTextEditingList[2 * i].text;
-      String tr = wordTextEditingList[2 * i + 1].text;
-      if (!eng.isEmpty || !tr.isEmpty)
-        debugPrint(eng + "-------------" + tr);
-      else {}
+      toastMessage("Lütfen Liste Adı Giriniz!");
     }
   }
 
