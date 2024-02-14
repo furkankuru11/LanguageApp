@@ -6,7 +6,6 @@ import 'package:languageapp/db/model/list.dart';
 import 'package:languageapp/db/model/words.dart';
 import 'package:languageapp/global_widget/toast.dart';
 import 'package:languageapp/tools/customButton.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
@@ -154,7 +153,8 @@ class _CreateListState extends State<CreateList> {
         wordListField;
       });
     } else {
-      debugPrint("Son Eleman Silinemez");
+      toastMessage("Minimum 4 Eleman Olmalıdır", Colors.orange);
+      debugPrint("4 Eleman olmak zorunda");
     }
   }
 
@@ -168,7 +168,7 @@ class _CreateListState extends State<CreateList> {
         String eng = wordTextEditingList[2 * i].text;
         String tr = wordTextEditingList[2 * i + 1].text;
 
-        if (!eng.isEmpty && !tr.isEmpty) {
+        if (eng.isNotEmpty && tr.isNotEmpty) {
           counter++;
         } else {
           notEmptyPair = true;
@@ -199,12 +199,15 @@ class _CreateListState extends State<CreateList> {
                 word.status.toString());
           }
 
-          toastMessage("Liste Başarıyla Oluşturuldu");
+          toastMessage("Liste Başarıyla Oluşturuldu", Colors.green);
+          print("Liste Oluşturuldu");
         } else {
-          toastMessage("Boş Alanları Doldurun veya Silin");
+          toastMessage("Boş Alanları Doldurun veya Silin", Colors.orange);
+          print("Boş alanları silin");
         }
       } else {
-        toastMessage("Minimum 4  Çift Olmalıdır");
+        toastMessage("Minimum 4  Çift Olmalıdır", Colors.orange);
+        print("minimum 4 tane olmak zorunda");
       }
 
       for (int i = 0; i < wordTextEditingList.length / 2; i++) {
@@ -215,7 +218,8 @@ class _CreateListState extends State<CreateList> {
         else {}
       }
     } else {
-      toastMessage("Lütfen Liste Adı Giriniz!");
+      toastMessage("Lütfen Liste Adı Giriniz!", Colors.orange);
+      print("liste adı gir");
     }
   }
 
