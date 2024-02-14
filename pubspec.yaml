@@ -44,6 +44,7 @@ dev_dependencies:
   url_launcher: ^6.2.4
   package_info_plus: ^5.0.1
   sqflite: ^2.3.2
+  fluttertoast: ^8.2.4
   
 
   # The "flutter_lints" package below contains a set of recommended lints to

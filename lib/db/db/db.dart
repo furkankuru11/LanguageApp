@@ -58,7 +58,7 @@ FOREIGN KEY(${WordTableFields.list_id}) REFERENCES $tableNameLists(${ListsTableF
 
   Future<Word> insertWord(Word word) async {
     final db = await instance.database;
-    final id = await db.insert(tableNameLists, word.toJson());
+    final id = await db.insert(tableNameWords, word.toJson());
 
     return word.copy(id: id);
   }

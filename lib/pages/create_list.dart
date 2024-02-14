@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/db/db/db.dart';
 import 'package:languageapp/db/model/list.dart';
 import 'package:languageapp/db/model/words.dart';
 import 'package:languageapp/tools/customButton.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateList extends StatefulWidget {
   const CreateList({Key? key}) : super(key: key);
@@ -197,16 +197,37 @@ class _CreateListState extends State<CreateList> {
               word.status.toString());
         }
 
-        print("TOAST MESSAGE => Liste Oluşturuldu");
+        Fluttertoast.showToast(
+            msg: "Liste Başarıyla Oluşturuldu",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
         _listName.clear();
         wordTextEditingList.forEach((element) {
           element.clear();
         });
       } else {
-        debugPrint("Message => Boş Alanları Doldurun");
+        Fluttertoast.showToast(
+            msg: "Boş Alanları Doldurun veya Silin",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } else {
-      debugPrint("Message => Minimum 4 çift dolu olmalıdır");
+      Fluttertoast.showToast(
+          msg: "Minimum 4  Çift Olmalıdır",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
 
     for (int i = 0; i < wordTextEditingList.length / 2; i++) {
@@ -214,9 +235,7 @@ class _CreateListState extends State<CreateList> {
       String tr = wordTextEditingList[2 * i + 1].text;
       if (!eng.isEmpty || !tr.isEmpty)
         debugPrint(eng + "-------------" + tr);
-      else {
-        debugPrint("boş alan");
-      }
+      else {}
     }
   }
 
