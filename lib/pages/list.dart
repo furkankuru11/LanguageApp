@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/pages/create_list.dart';
-import 'package:languageapp/tools/listCard.dart';
 import 'package:languageapp/db/db/db.dart';
 
 class ListPage extends StatefulWidget {
@@ -52,18 +51,82 @@ class _ListPageState extends State<ListPage> {
           textAlign: TextAlign.center,
         ),
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-            child: Center(
-          child: Container(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              ListCard(),
-              ListCard(),
-            ]),
-            color: Colors.white,
-          ),
-        )),
+      body: SafeArea(
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return listItem(_lists[index]['list_id'] as int,
+                listName: _lists[index]['name'].toString(),
+                sumWords: _lists[index]['sum_word'].toString(),
+                sumUnlearned: _lists[index]['sum_unlearned'].toString());
+          },
+          itemCount: _lists.length,
+        ),
+      ),
+    );
+  }
+
+  InkWell listItem(int id,
+      {@required String? listName,
+      @required String? sumWords,
+      @required String? sumUnlearned}) {
+    return InkWell(
+      onTap: () {
+        debugPrint(id.toString());
+      },
+      child: Center(
+        child: Column(
+          children: [
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.red,
+                  ),
+                  margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                  width: double.infinity,
+                  height: 130,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Text(
+                              listName!,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              "${sumWords!}: Terim",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              "${(int.parse(sumWords) - int.parse(sumUnlearned!))}: Kelime Öğrenildi",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                            SizedBox(height: 3),
+                            Text(
+                              "${sumUnlearned!}: Kelime Öğrenilecek",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
