@@ -74,12 +74,24 @@ FOREIGN KEY(${WordTableFields.list_id}) REFERENCES $tableNameLists(${ListsTableF
     return result.map((json) => Word.fromJson(json)).toList();
   }
 
-  Future<List<Lists>> readListAll() async {
+  Future<List<Map<String, Object?>>> readListAll() async {
     final db = await instance.database;
-    final orderBy = '${ListsTableFields.id} ASC';
-    final result = await db.query(tableNameLists, orderBy: orderBy);
+    List<Map<String, Object?>> res = [];
+    List<Map<String, Object?>> lists =
+        await db.rawQuery("SELECT id,name FROM lists");
 
-    return result.map((json) => Lists.fromJson(json)).toList();
+    await Future.forEach(lists, (element) async {
+      // element = element as Map;
+      var wordInfoByList = await db.rawQuery(
+          "SELECT(SELECT COUNT(*) FROM words where list_id=${element['id']}) as sum_word,(SELECT COUNT(*) FROM words where status=0 and list_id=${element['id']}) as sum_unlearned");
+      Map<String, Object?> temp = Map.of(wordInfoByList[0]);
+      temp["name"] = element["name"];
+      temp["list_id"] = element["id"];
+      res.add(temp);
+    });
+    print(res);
+
+    return res;
   }
 
   Future<int> updateWord(Word word) async {

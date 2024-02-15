@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/pages/create_list.dart';
 import 'package:languageapp/tools/listCard.dart';
+import 'package:languageapp/db/db/db.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -11,6 +12,17 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    deneme();
+  }
+
+  void deneme() async {
+    await DB.instance.readListAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
