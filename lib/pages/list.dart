@@ -12,15 +12,20 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  List<Map<String, Object?>> _lists = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    deneme();
+    getList();
   }
 
-  void deneme() async {
-    await DB.instance.readListAll();
+  void getList() async {
+    _lists = await DB.instance.readListAll();
+    setState(() {
+      _lists;
+    });
   }
 
   @override
