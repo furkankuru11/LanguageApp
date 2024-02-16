@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:languageapp/pages/create_list.dart';
 import 'package:languageapp/db/db/db.dart';
+import 'package:languageapp/pages/words.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -65,16 +66,42 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-  void delete() async {}
+  void delete(int id) async {
+    await DB.instance.deleteListsAndWordByList(id);
+    setState(() {
+      _lists.removeWhere((element) => element['list_id'] == id);
+    });
+  }
 
-  Widget listItem(int id,
+  Widget listItem(int? id,
       {@required String? listName,
       @required String? sumWords,
       @required String? sumUnlearned}) {
     return Dismissible(
       key: Key(id.toString()),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Emin misiniz?"),
+              content: Text("Bu listeyi silmek istediğinizden emin misiniz?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text("İptal"),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text("Evet, Sil"),
+                ),
+              ],
+            );
+          },
+        );
+      },
       onDismissed: (direction) {
-        delete();
+        delete(id!);
       },
       background: Container(
         child: Align(
@@ -90,14 +117,11 @@ class _ListPageState extends State<ListPage> {
       ),
       secondaryBackground: Container(
         child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: 30.0),
-            child: Icon(
-              Icons.delete,
-              size: 30,
-              color: Color(0xFFD92525),
-            ),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.delete,
+            size: 30,
+            color: Color(0xFFD92525),
           ),
         ),
       ), // Sağa doğru kaydırma işlemini kaldırıyoruz
@@ -106,7 +130,13 @@ class _ListPageState extends State<ListPage> {
       child: InkWell(
         onTap: () {
           debugPrint(id.toString());
-          // Öğeye tıklandığında yapılacak işlemler buraya gelecek
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => WordsPage(
+                        listName: listName,
+                        listID: id,
+                      )));
         },
         child: Center(
           child: Column(
@@ -115,7 +145,7 @@ class _ListPageState extends State<ListPage> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(15),
                         color: Color(0xFF007369)),
                     margin: EdgeInsets.only(top: 20, left: 20, right: 20),
                     width: double.infinity,

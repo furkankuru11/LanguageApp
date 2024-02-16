@@ -161,7 +161,6 @@ class _CreateListState extends State<CreateList> {
   void saveRow() async {
     if (_listName.text.isNotEmpty) {
       int counter = 0;
-
       bool notEmptyPair = false;
 
       for (int i = 0; i < wordTextEditingList.length / 2; i++) {
@@ -200,6 +199,10 @@ class _CreateListState extends State<CreateList> {
           }
 
           toastMessage("Liste Başarıyla Oluşturuldu", Colors.green);
+          _listName.clear();
+          wordTextEditingList.forEach((element) {
+            element.clear();
+          });
           print("Liste Oluşturuldu");
         } else {
           toastMessage("Boş Alanları Doldurun veya Silin", Colors.orange);
