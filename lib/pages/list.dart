@@ -116,12 +116,14 @@ class _ListPageState extends State<ListPage> {
         ),
       ),
       secondaryBackground: Container(
+        color: Color.fromARGB(255, 228, 50, 50),
+        margin: EdgeInsets.only(top: 20),
         child: Align(
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           child: Icon(
             Icons.delete,
             size: 30,
-            color: Color(0xFFD92525),
+            color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
       ), // Sağa doğru kaydırma işlemini kaldırıyoruz

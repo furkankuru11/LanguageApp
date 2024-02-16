@@ -56,6 +56,13 @@ FOREIGN KEY(${WordTableFields.list_id}) REFERENCES $tableNameLists(${ListsTableF
     return lists.copy(id: id);
   }
 
+  Future<int> markAsLearned(bool mark, int id) async {
+    final db = await instance.database;
+    int result = (mark == true ? 1 : 0);
+    return db.update(tableNameWords, {WordTableFields.status: result},
+        where: '${WordTableFields.id}=?', whereArgs: [id]);
+  }
+
   Future<Word> insertWord(Word word) async {
     final db = await instance.database;
     final id = await db.insert(tableNameWords, word.toJson());
