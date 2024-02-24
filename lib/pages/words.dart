@@ -20,6 +20,8 @@ class _WordsPageState extends State<WordsPage> {
 
   _WordsPageState({@required this.listID, @required this.listName});
   List<Word> _wordList = [];
+  bool pressController = false;
+  List<bool> deleteIndexList = [];
 
   @override
   void initState() {
@@ -30,6 +32,9 @@ class _WordsPageState extends State<WordsPage> {
 
   void getWordByList() async {
     _wordList = await DB.instance.readWordByList(listID);
+    for (int i = 0; i < _wordList.length; i++) {
+      deleteIndexList.add(false);
+    }
     setState(() {
       _wordList;
     });
@@ -60,20 +65,26 @@ class _WordsPageState extends State<WordsPage> {
     );
   }
 
-//burada bool? value yi değiştirmem gerekiyor videoda dakika 6:40 'da gösteriyor
-  wordItem(int wordID, int index,
-      {@required String? word_tr,
-      @required String? word_eng,
-      @required bool? status}) {
-    bool? value;
+  wordItem(
+    int wordID,
+    int index, {
+    @required String? word_tr,
+    @required String? word_eng,
+    @required bool? status,
+  }) {
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (direction) {
-        _wordList[index] = _wordList[index].copy(status: value);
-        if (value == true) {
-          toastMessage("Ogrenildi Olarak İşaretlendi", Colors.green);
+        _wordList[index] = _wordList[index].copy(status: true);
+        if (status == true && direction == DismissDirection.startToEnd) {
+          toastMessage("Öğrenildi Olarak İşaretlendi", Colors.green);
           DB.instance.markAsLearned(true, _wordList[index].id as int);
+
           print("Öğrenildi :" + word_tr);
+        } else if (status == true && direction == DismissDirection.endToStart) {
+          deleteIndexList[index] = true;
+          _wordList.removeAt(index);
+          toastMessage("Kelime Silindi", Colors.red);
         } else {
           toastMessage("Öğrenilemedi", Colors.red);
           DB.instance.markAsLearned(false, _wordList[index].id as int);
@@ -101,7 +112,24 @@ class _WordsPageState extends State<WordsPage> {
           ),
         ),
       ),
-      direction: DismissDirection.startToEnd,
+      secondaryBackground: Container(
+        color: Color.fromARGB(248, 247, 31, 31),
+        margin: EdgeInsets.only(
+          top: 20,
+        ),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 20.0,
+            ),
+            child: Icon(
+              Icons.delete,
+              color: Color.fromARGB(195, 246, 248, 247),
+            ),
+          ),
+        ),
+      ),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
