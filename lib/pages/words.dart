@@ -3,6 +3,7 @@ import "package:google_fonts/google_fonts.dart";
 import 'package:languageapp/db/db/db.dart';
 import 'package:languageapp/db/model/words.dart';
 import 'package:languageapp/global_widget/toast.dart';
+import 'package:languageapp/pages/addWord.dart';
 
 class WordsPage extends StatefulWidget {
   final int? listID;
@@ -40,6 +41,23 @@ class _WordsPageState extends State<WordsPage> {
     });
   }
 
+  void delete(int index) async {
+    try {
+      if (deleteIndexList[index] == true) {
+        await DB.instance.deleteWord(_wordList[index].id as int);
+        setState(() {
+          _wordList.removeAt(index);
+          deleteIndexList.removeAt(index);
+        });
+        toastMessage("Kelime Silindi", Colors.red);
+      }
+    } catch (e) {
+      print("Hata oluştu: $e");
+
+      toastMessage("Hata oluştu, kelime silinemedi.", Colors.red);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +80,22 @@ class _WordsPageState extends State<WordsPage> {
         },
         itemCount: _wordList.length,
       )),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddWordPage(listID, listName)))
+                .then((value) {
+              getWordByList();
+            });
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 25,
+          ),
+          backgroundColor: Color(0xFF003840)),
     );
   }
 
@@ -75,16 +109,19 @@ class _WordsPageState extends State<WordsPage> {
     return Dismissible(
       key: UniqueKey(),
       onDismissed: (direction) {
+        delete(index);
         _wordList[index] = _wordList[index].copy(status: true);
         if (status == true && direction == DismissDirection.startToEnd) {
           toastMessage("Öğrenildi Olarak İşaretlendi", Colors.green);
           DB.instance.markAsLearned(true, _wordList[index].id as int);
+          _wordList.removeAt(index);
 
           print("Öğrenildi :" + word_tr);
         } else if (status == true && direction == DismissDirection.endToStart) {
           deleteIndexList[index] = true;
           _wordList.removeAt(index);
           toastMessage("Kelime Silindi", Colors.red);
+          delete(index);
         } else {
           toastMessage("Öğrenilemedi", Colors.red);
           DB.instance.markAsLearned(false, _wordList[index].id as int);

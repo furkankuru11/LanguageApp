@@ -34,8 +34,9 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CreateList()));
+            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CreateList()))
+                .then((value) {});
           },
           child: Icon(
             Icons.add,
